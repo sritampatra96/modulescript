@@ -24,7 +24,7 @@ SIGNALS = {  # keyword -> (gravity points, kind)
     "risk": (r"\b(production|delete|payment|security|auth|password|legal|medical|financial|tax|contract|irreversible|customer data)\b", 2),
     "research": (r"\b(research|compare|analy[sz]e|investigate|literature|market|strategy|evaluate|audit)\b", 1),
     "writing": (r"\b(write|essay|article|report|email|post|story|summar|rewrite|translate|proofread)\b", 0),
-    "simple": (r"\b(quick|simple|small|tiny|rename|typo|one[- ]line|just|short|reword|format)\b", -1),
+    "simple": (r"\b(quick|simple|small(?! business)|tiny|rename|typo|one[- ]line|just|short|reword|format)\b", -1),
 }
 
 def route(task: str) -> dict:
@@ -40,6 +40,8 @@ def route(task: str) -> dict:
     g = max(1, min(5, g))
     coding = hits["coding"] or hits["architecture"]
     tier = {1: "light", 2: "light", 3: "standard", 4: "deep", 5: "max"}[g]
+    if hits["research"] and not hits["simple"]:
+        g = max(g, 3)  # research/analysis is never a trivial ask
     if g == 2 and (hits["research"] or coding) and not hits["simple"]:
         tier = "standard"
     spec = CFG["tiers"][tier]
