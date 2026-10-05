@@ -1,5 +1,7 @@
 # Memory Optimizer Kit - how to use (3 steps, no coding)
 
+**Want it ON BY DEFAULT for every task (no pasting)? Read `DEFAULT_ON.md` first.**
+
 **What it does**
 - *Model & effort prompter*: for each new task it tells you which model and reasoning effort to pick (light / standard / deep / max) and why.
 - *Memory optimizer*: keeps a short memory file (profile, projects, decisions, log). Old items move to an archive and only relevant ones come back, so every task starts with a small, focused context.
