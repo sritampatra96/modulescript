@@ -21,3 +21,6 @@ For EVERY new task, automatically, without being asked:
 ## Codex - global default
 Copy the kit's `AGENTS.md` to `~/.codex/AGENTS.md` (applies to every project and task). Copy the `tools/`, `config/`, `memory/` folders to `~/.codex/memory-kit/` and change the paths in that AGENTS.md from `tools/kit.py` to `~/.codex/memory-kit/tools/kit.py`.
 For one project only, just unzip the kit into the project: Codex reads its `AGENTS.md` automatically.
+
+## Skill version (Codex / Claude Code)
+Copy `skills/task-optimizer/` into `~/.codex/skills/` or `~/.claude/skills/`. Its description tells the agent to run it at the start of EVERY task. Edit the `tools/kit.py` path inside SKILL.md if you put the kit somewhere else.
