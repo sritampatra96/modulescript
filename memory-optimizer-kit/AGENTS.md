@@ -16,3 +16,6 @@ You are working with a user who is NOT a coder. Use simple language. Do setup an
 - Never paste memory back to the user. Never store secrets, passwords, or API keys in memory.
 - Prefer escalating reasoning effort before switching to a bigger model.
 - Edit `config/models.json` if model names differ in the user's account.
+
+## Skill
+`skills/task-optimizer/SKILL.md` is this same protocol as a skill. Install it by copying the folder `skills/task-optimizer` into `~/.codex/skills/` (Codex) or `~/.claude/skills/` (Claude Code); it then runs on every new task.
