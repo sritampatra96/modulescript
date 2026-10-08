@@ -1,0 +1,5 @@
+I attached memory-optimizer-kit.zip. Please set yourself up and run it:
+1. Unzip it with Python and read AGENTS.md in the folder.
+2. From now on, follow AGENTS.md for every task in this chat, automatically - I should never have to remind you.
+3. My first task is: <TYPE YOUR TASK HERE>
+(When we finish, run `python tools/kit.py export` and give me the updated zip to download.)

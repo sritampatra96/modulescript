@@ -1,0 +1,11 @@
+{
+  "_note": "EDIT THIS FILE when model names change. Names are examples - use whatever your ChatGPT/Codex account shows in its model picker.",
+  "tiers": {
+    "light":    {"model": "gpt-5-mini",  "coding_model": "gpt-5-codex-mini", "efforts": ["minimal", "low"]},
+    "standard": {"model": "gpt-5",       "coding_model": "gpt-5-codex",      "efforts": ["low", "medium"]},
+    "deep":     {"model": "gpt-5",       "coding_model": "gpt-5-codex",      "efforts": ["high"]},
+    "max":      {"model": "gpt-5-pro",   "coding_model": "gpt-5-codex",      "efforts": ["high", "xhigh"]}
+  },
+  "context_budget_chars": 6000,
+  "archive_keep_recent_log": 15
+}
