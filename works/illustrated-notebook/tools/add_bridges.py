@@ -7,7 +7,7 @@ end of the previous section and the bridge card fills the space below; the new s
 to the top of the next page. Footers are renumbered.
 
 Usage: add_bridges.py ref.pdf out.pdf   (prints the old->new page map as JSON on stdout)
-Then: interlink_pdf.py out.pdf Thermodynamics_Illustrated_Notebook_interlinked.pdf
+Then: add_highlights.py out.pdf hl.pdf ; interlink_pdf.py hl.pdf Thermodynamics_Illustrated_Notebook_interlinked.pdf
 ref.pdf is the plain notebook (no interlinks): reference/Thermodynamics_Illustrated_Notebook.pdf,
 in commit 103ca72 (`git show 103ca72:works/illustrated-notebook/reference/Thermodynamics_Illustrated_Notebook.pdf`).
 Needs: pikepdf, reportlab, and the Comic Neue TTFs next to this script.
