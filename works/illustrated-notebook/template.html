@@ -100,6 +100,26 @@ input[type=range]{width:100%;accent-color:var(--red);height:32px}
 .trivia h3{color:var(--navy)}
 .footer{text-align:center;font-size:12px;opacity:.6;margin-top:50px;font-family:Arial,sans-serif}
 
+
+/* ===== 10. INTERLINKS: sticky contents, section bridges, back-to-top ===== */
+html{scroll-behavior:smooth}
+.sec{scroll-margin-top:70px}
+.toc{position:sticky;top:0;z-index:20;display:flex;gap:8px;overflow-x:auto;padding:8px 10px;margin:0 -10px 10px;
+  background:var(--paper);border-bottom:2px dashed #9db8dd;scrollbar-width:thin}
+.toc a{flex:none;display:flex;align-items:center;gap:6px;text-decoration:none;color:var(--navy);font-size:13px;font-weight:700;
+  border:2px solid transparent;border-radius:30px;padding:3px 12px 3px 4px;white-space:nowrap}
+.toc a i{font-style:normal;width:24px;height:24px;border-radius:50%;background:#ffd6e2;border:2px solid var(--red);color:var(--red);display:grid;place-items:center;font-size:11px}
+.toc a:hover{border-color:var(--navy)}
+.toc a.on{background:var(--yellow);border-color:var(--navy);color:#1d2340}
+.bridge{margin:46px 0 0;border:2px dashed #7fa6dc;background:var(--blue-soft);border-radius:14px;padding:12px 16px}
+.bridge p{margin:0 0 10px;font-size:16px}
+.bridge .nav{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.bridge a{text-decoration:none;color:var(--navy);font-weight:700;border:2px solid var(--navy);border-radius:30px;padding:4px 16px;background:var(--paper)}
+.bridge a:hover{background:var(--yellow)}
+.totop{position:fixed;right:16px;bottom:16px;z-index:30;border:2px solid var(--navy);background:var(--yellow);color:#1d2340;
+  width:44px;height:44px;border-radius:50%;font-size:20px;cursor:pointer;display:none;box-shadow:3px 3px 0 #0003}
+@media print{.toc,.bridge,.totop{display:none}}
+
 /* ===== PRINT: solutions expand ===== */
 @media print{
   body{background:#fff}.page{background:var(--paper);-webkit-print-color-adjust:exact;print-color-adjust:exact}
@@ -109,6 +129,7 @@ input[type=range]{width:100%;accent-color:var(--red);height:32px}
 </head>
 <body>
 <main class="page">
+<nav class="toc" id="toc" aria-label="Contents"></nav>
 
 <!-- ================= COVER ================= -->
 <div class="kicker">COURSE NAME · THE ILLUSTRATED NOTEBOOK</div>
@@ -131,7 +152,7 @@ All narration, question data, worked solutions, sequence, trivia and source note
 Flow kept from the source notes: Topic A → Topic B → Topic C → Topic D.</div>
 
 <!-- ================= SECTION 00: HOOK ================= -->
-<div class="sec"><div class="badge">00</div><h2>Introduction — The Story</h2></div>
+<div class="sec" id="s00" data-bridge="Start here: the story that makes the first rule feel obvious."><div class="badge">00</div><h2>Introduction — The Story</h2></div>
 <div class="card">
   <div class="fig-label">FIGURE 00</div>
   <div class="illus" style="aspect-ratio:21/8">🎨 historical scene</div>
@@ -140,7 +161,7 @@ Flow kept from the source notes: Topic A → Topic B → Topic C → Topic D.</d
 <p>In <b>YEAR</b>, <b>PERSON</b> noticed something odd. (One surprising, concrete scene. No definitions yet.) That tells us the big idea: <b>the key idea in plain words</b>. So we start with the first rule.</p>
 
 <!-- ================= SECTION 01: CONCEPT ================= -->
-<div class="sec"><div class="badge">01</div><h2>1. First Concept</h2></div>
+<div class="sec" id="s01" data-bridge="Now that we know the story, here is the first rule in plain words."><div class="badge">01</div><h2>1. First Concept</h2></div>
 <div class="chips"><span class="chip">Idea A</span><span class="chip">Idea B</span><span class="chip">Idea C</span></div>
 
 <div class="card">
@@ -227,7 +248,7 @@ Flow kept from the source notes: Topic A → Topic B → Topic C → Topic D.</d
 </section>
 
 <!-- ================= CLOSING ================= -->
-<div class="sec"><div class="badge">10</div><h2>10. Extension: Big-Picture Idea</h2></div>
+<div class="sec" id="s10" data-bridge="Last step: zoom out and see how every rule fits together."><div class="badge">10</div><h2>10. Extension: Big-Picture Idea</h2></div>
 <p>A thought experiment or consequence that lifts the whole module. End with the summary line: <b>Law 1 holds; Law 2 holds; limit holds.</b></p>
 
 <div class="trivia">
@@ -237,9 +258,48 @@ Flow kept from the source notes: Topic A → Topic B → Topic C → Topic D.</d
   <p>All problems are newly written at the course's exam difficulty, in the style of the named textbook and recent papers. Constants used: …</p>
 </div>
 
+<button class="totop" id="totop" aria-label="Back to top">↑</button>
 <div class="footer">MODULE NAME · COURSE | <span id="pg">1 / 1</span></div>
 </main>
 
+<script>
+/* Auto interlinks: builds contents bar, Previous/Next bridges, scroll highlight, back-to-top from every .sec.
+   For each section set id="sNN" and data-bridge="one line that hooks the reader into THIS section". */
+(function(){
+  var secs=[].slice.call(document.querySelectorAll('.sec'));
+  var toc=document.getElementById('toc');
+  function label(sec){return sec.querySelector('h2').textContent.replace(/^\s*\d+\.\s*/,'').trim()}
+  function num(sec){return sec.querySelector('.badge').textContent.trim()}
+  secs.forEach(function(sec){
+    var a=document.createElement('a');a.href='#'+sec.id;a.dataset.t=sec.id;
+    a.innerHTML='<i>'+num(sec)+'</i>'+label(sec);toc.appendChild(a);
+  });
+  // bridge before each section (except the first) and one at the very end
+  var end=document.querySelector('.footer');
+  secs.forEach(function(sec,i){
+    var prev=secs[i-1];if(!prev)return;
+    var b=document.createElement('div');b.className='bridge';
+    b.innerHTML='<p><b>Next up:</b> '+(sec.dataset.bridge||label(sec))+'</p><div class="nav">'+
+      '<a href="#'+prev.id+'">← Back: '+label(prev)+'</a><a href="#'+sec.id+'">Go: '+label(sec)+' →</a></div>';
+    sec.parentNode.insertBefore(b,sec);
+  });
+  if(secs.length){var l=document.createElement('div');l.className='bridge';
+    l.innerHTML='<div class="nav"><a href="#'+secs[secs.length-1].id+'">← Back: '+label(secs[secs.length-1])+'</a><a href="#toc">↑ Contents</a></div>';
+    end.parentNode.insertBefore(l,end);}
+  // highlight current section in the contents bar
+  var links=[].slice.call(toc.querySelectorAll('a'));
+  function spy(){
+    var cur=secs[0];
+    secs.forEach(function(x){if(x.getBoundingClientRect().top<=140)cur=x});
+    links.forEach(function(a){a.classList.toggle('on',a.dataset.t===cur.id)});
+    var on=toc.querySelector('.on');if(on&&on!==spy.last){spy.last=on;toc.scrollTo({left:on.offsetLeft-20,behavior:'smooth'})}
+  }
+  window.addEventListener('scroll',spy,{passive:true});spy();
+  var up=document.getElementById('totop');
+  window.addEventListener('scroll',function(){up.style.display=window.scrollY>600?'block':'none'});
+  up.addEventListener('click',function(){window.scrollTo({top:0})});
+})();
+</script>
 <script>
 /* Tiny particle toy: speed scales with sqrt(T). Copy this block for each artifact; change the readout maths. */
 (function(){

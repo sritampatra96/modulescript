@@ -28,6 +28,14 @@ A module is a **teaching script turned into a hand-drawn science notebook**: sto
 3. **Numbered sections** (`01`, `02`, ...) with a pink circle badge and a dashed blue rule above the heading.
 4. **Closing section:** an "Extension" (a big-picture idea, e.g. Maxwell's demon and heat death), a one-paragraph summary of the module's laws, **Bonus Trivia** with a star, and a **Question Sources Note**.
 
+## 3b. Interlinks (moving between sections)
+Every module must be navigable. The template builds all of this automatically from the section headings:
+- **Contents bar** pinned at the top: one numbered chip per section, the current section is highlighted in yellow, click any chip to jump there.
+- **Bridge box** between every two sections: a blue dashed box with a one-line hook ("Next up: ...") and two buttons, `← Back: <previous section>` and `Go: <next section> →`. The hook comes from `data-bridge="..."` on the next section.
+- **Back-to-top button** (↑) appears after scrolling down. Last bridge offers `↑ Contents`.
+- **How to use:** give every section header `class="sec" id="sNN" data-bridge="one sentence that links the previous idea to this one"`. Write the bridge sentence like the notebook's own transitions ("Heat flows hot to cold, never the reverse. To describe this direction we need entropy.").
+- Hidden when printing.
+
 ## 4. Building blocks
 - **Figure card.** Label `FIGURE 03` in small caps, then the image, then a dashed divider, then the caption `Figure 3.` (bold) with a plain description, then a tiny italic note: *AI-generated notebook illustration · diagram geometry and question data define the physics.*
   - **Two-up figure:** a cartoon illustration on the left (coloured-pencil style, objects with faces and a thumbs-up, yellow "spark" lines) and a **PHYSICS MODEL** panel on the right (blue dashed box with a clean, labelled schematic).
@@ -75,6 +83,7 @@ Hook (story) → Illustration → Rule in words → Equation box and symbol list
 - [ ] Every section has a number badge, a figure, an equation box with symbols, and an examiner tip
 - [ ] Every problem has: source line, visual setup, question parts, worked solution
 - [ ] At least one interactive artifact per 2 or 3 sections, each tied to a worked problem
+- [ ] Every `.sec` has an `id` and a `data-bridge` sentence; contents bar and bridges tested
 - [ ] Closing summary, Bonus Trivia, Question Sources Note
 - [ ] Print preview checked (solutions expanded)
 - [ ] Numbers in the artifacts match the worked solutions
