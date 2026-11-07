@@ -22,13 +22,13 @@ NAVY, RED, YELLOW, PINK, CREAM = "#1d3a7a", "#d64030", "#f2c230", "#ffd6e2", "#f
 
 # (number label, title, first page)
 SECTIONS = [
-    ("00", "Introduction: What is Heat?", 2), ("01", "Internal Energy", 3), ("02", "Work Done by a Gas", 6),
-    ("03", "The First Law", 10), ("04", "Entropy", 15), ("05", "Calculating Entropy", 20),
-    ("06", "The Second Law", 26), ("07", "Thermodynamic Processes", 29), ("08", "Heat Engines", 39),
-    ("09", "The Carnot Cycle", 43), ("10", "Maxwell's Demon, Heat Death", 49),
+    ("00", "Introduction: What is Heat?", 2), ("01", "Internal Energy", 3), ("02", "Work Done by a Gas", 7),
+    ("03", "The First Law", 12), ("04", "Entropy", 18), ("05", "Calculating Entropy", 24),
+    ("06", "The Second Law", 31), ("07", "Thermodynamic Processes", 35), ("08", "Heat Engines", 46),
+    ("09", "The Carnot Cycle", 51), ("10", "Maxwell's Demon, Heat Death", 58),
 ]
-PROBLEMS = [5, 8, 12, 13, 18, 21, 25, 28, 32, 35, 37, 42, 47]   # worked problems 1..13
-ARTIFACTS = [3, 13, 23, 36, 48]                                   # interactive artifacts 1..5
+PROBLEMS = [5, 9, 14, 15, 21, 25, 29, 33, 38, 41, 43, 49, 55]   # worked problems 1..13
+ARTIFACTS = [3, 15, 27, 42, 56]                                   # interactive artifacts 1..5
 MODULE = "THERMODYNAMICS"
 
 
