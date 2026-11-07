@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MODULE NAME — Illustrated Notebook</title>
+<!-- Equations: KaTeX from a CDN. Write maths as \( ... \) inline or \[ ... \] display. -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'\\[',right:'\\]',display:true},{left:'\\(',right:'\\)',display:false}]})"></script>
+<style>
+/* ===== 1. DESIGN TOKENS (change these to re-theme a module) ===== */
+:root{
+  --paper:#fdf8ea; --line:#dfe6f0; --margin:#f0a8a8;
+  --navy:#1d3a7a; --red:#d64030; --yellow:#f2c230; --green:#2e7d32;
+  --blue-soft:#eaf3fd; --rust:#b9532f; --teal:#2f7f7a; --ink:#22305a;
+  --font:'Comic Neue','Comic Sans MS','Chalkboard SE',cursive,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root{--paper:#1c2030;--line:#2a3048;--margin:#6b3a3a;--navy:#9db8ff;--ink:#e6ebff;--blue-soft:#232a42;--red:#ff7b6b;--green:#7fd18a}
+}
+*{box-sizing:border-box}
+body{margin:0;background:#efe9d6;font-family:var(--font);color:var(--ink);line-height:1.7;font-size:17px}
+@media (prefers-color-scheme: dark){body{background:#12141f}}
+
+/* ===== 2. NOTEBOOK PAGE ===== */
+.page{max-width:860px;margin:0 auto;padding:36px 28px 60px 56px;background:
+  linear-gradient(90deg,transparent 40px,var(--margin) 40px,var(--margin) 42px,transparent 42px),
+  repeating-linear-gradient(transparent 0,transparent 28px,var(--line) 28px,var(--line) 29px),var(--paper);
+  min-height:100vh}
+@media (max-width:600px){.page{padding:20px 16px 40px 28px;background-position:-12px 0}}
+.kicker{letter-spacing:.28em;font-size:12px;font-weight:700;color:var(--red);text-transform:uppercase}
+h1{font-size:clamp(38px,8vw,64px);margin:.2em 0 0;color:var(--navy);line-height:1.05;text-transform:uppercase}
+.tagline{font-size:clamp(34px,7vw,56px);color:var(--red);margin:0;line-height:1.1;
+  background:linear-gradient(transparent 82%,var(--yellow) 82%,var(--yellow) 90%,transparent 90%);display:inline-block}
+.sub{font-size:19px;color:var(--navy);margin:14px 0 6px}
+.byline{font-size:14px;opacity:.8}
+
+/* ===== 3. SECTION HEADER ===== */
+.sec{margin:56px 0 18px;border-top:3px dashed #9db8dd;padding-top:18px;display:flex;gap:14px;align-items:center}
+.sec h2{margin:0;font-size:clamp(24px,5vw,36px);color:var(--navy);text-transform:uppercase}
+.badge{flex:none;width:44px;height:44px;border-radius:50%;background:#ffd6e2;border:2px solid var(--red);
+  color:var(--red);display:grid;place-items:center;font-weight:700;font-size:15px}
+h3{color:var(--navy);font-size:26px;margin:32px 0 8px}
+
+/* ===== 4. CARDS ===== */
+.card{background:var(--paper);border:2px solid var(--navy);border-radius:16px;padding:16px 18px;margin:20px 0;box-shadow:4px 4px 0 #0002}
+.fig-label{font-size:12px;letter-spacing:.2em;font-weight:700;color:var(--navy)}
+.fig-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:center;margin-top:8px}
+@media (max-width:640px){.fig-grid{grid-template-columns:1fr}}
+.illus{border:2px solid #0003;border-radius:10px;background:#fff7e0;aspect-ratio:1;display:grid;place-items:center;font-size:72px}
+.model{background:var(--blue-soft);border:2px dashed #7fa6dc;border-radius:12px;padding:14px;font-size:14px}
+.model b{letter-spacing:.2em;font-size:12px;color:var(--navy)}
+.cap{border-top:2px dashed #0003;margin-top:14px;padding-top:10px;font-size:15px}
+.cap small{display:block;font-style:italic;opacity:.65;font-size:12px;margin-top:4px}
+.fig-svg{width:100%;height:auto;display:block}
+
+/* ===== 5. EQUATION BOX + SYMBOLS ===== */
+.eq{border:3px solid var(--green);border-radius:16px;background:var(--paper);box-shadow:5px 5px 0 #2e7d3255;
+  text-align:center;padding:18px 10px;margin:22px 0;font-size:24px;overflow-x:auto}
+.syms{list-style:none;padding:0;margin:8px 0 18px}.syms li{margin:2px 0}
+.q{color:var(--red)}.u{color:#7b3fc4}.w{color:#2a6fdb}   /* colour-code the same symbol everywhere */
+
+/* ===== 6. EXAMINER TIP, CHIPS, TABLE ===== */
+.tip{border:2px dashed #c9a300;background:#fff1a8;color:#3a2f00;border-radius:12px;padding:14px 20px;margin:20px 0;font-size:18px}
+.chips{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:12px 0}
+.chip{border:2px dashed var(--red);border-radius:30px;padding:4px 16px;font-weight:700;font-size:14px;letter-spacing:.08em;text-transform:uppercase}
+.chip:nth-child(2){border-color:#e07a3a}.chip:nth-child(3){border-color:#7b3fc4}
+table{width:100%;border-collapse:collapse;border-radius:10px;overflow:hidden;margin:18px 0;border:2px solid var(--navy)}
+th{background:var(--navy);color:#fff;text-align:left;padding:10px 14px}
+td{padding:10px 14px}tr:nth-child(even) td{background:var(--blue-soft)}
+
+/* ===== 7. WORKED PROBLEM ===== */
+.problem{border:2px solid var(--navy);border-top:10px solid var(--yellow);border-radius:16px;background:var(--paper);padding:14px 20px 20px;margin:34px 0;box-shadow:4px 4px 0 #0002}
+.plabel{color:var(--red);font-weight:700;letter-spacing:.2em;font-size:13px}
+.problem h3{margin:4px 0 4px;font-size:clamp(22px,4.5vw,32px)}
+.src{font-size:13px;opacity:.7;margin-bottom:12px}
+details.sol{border-top:2px dashed #2e7d3288;margin-top:16px;padding-top:12px}
+details.sol summary{cursor:pointer;color:var(--green);font-weight:700;font-size:20px}
+details.sol[open] summary{margin-bottom:8px}
+
+/* ===== 8. INTERACTIVE ARTIFACT ===== */
+.artifact{background:#fff1b8;border:3px solid var(--navy);border-radius:18px;padding:16px 22px 22px;margin:34px 0;box-shadow:6px 6px 0 var(--yellow)}
+.alabel{color:var(--red);font-weight:700;letter-spacing:.2em;font-size:13px;text-transform:uppercase}
+.artifact h3{margin:4px 0 14px;font-size:clamp(24px,5vw,34px)}
+.agrid{display:grid;grid-template-columns:1.1fr 1fr;gap:20px;align-items:start}
+@media (max-width:640px){.agrid{grid-template-columns:1fr}}
+.stage{border:2px dashed #7fa6dc;border-radius:12px;padding:8px;background:#fff}
+.stage canvas{width:100%;height:auto;display:block;border-radius:8px;background:var(--blue-soft)}
+.big{font-size:34px;font-weight:700;color:var(--red);margin:0}
+input[type=range]{width:100%;accent-color:var(--red);height:32px}
+.readout{border:2px dashed var(--green);background:#e4f4e4;color:#1d3a1d;border-radius:10px;padding:10px 14px;margin:12px 0}
+
+/* ===== 9. COVER EXTRAS ===== */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:26px 0;border-top:2px solid #0002;padding-top:10px}
+@media (max-width:600px){.stats{grid-template-columns:repeat(2,1fr)}}
+.stats b{display:block;font-size:34px;color:var(--navy)}.stats span{font-size:14px;opacity:.75}
+.about{background:#fff1a8;border:2px dashed #c9a300;border-radius:10px;padding:12px 18px;font-size:14px;color:#3a2f00}
+.trivia h3{color:var(--navy)}
+.footer{text-align:center;font-size:12px;opacity:.6;margin-top:50px;font-family:Arial,sans-serif}
+
+/* ===== PRINT: solutions expand ===== */
+@media print{
+  body{background:#fff}.page{background:var(--paper);-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  details.sol>*{display:block}.card,.problem,.artifact{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+<main class="page">
+
+<!-- ================= COVER ================= -->
+<div class="kicker">COURSE NAME · THE ILLUSTRATED NOTEBOOK</div>
+<h1>MODULE TITLE.</h1>
+<p class="tagline">Word. Word. Word.</p>
+<p class="sub">The complete teaching script, brought to life with illustrated apparatus, colourful notes, and properly typeset maths.</p>
+<div class="byline">Demo Script — Draft for approval<br>Author Name</div>
+
+<div class="card"><div class="illus" style="aspect-ratio:21/8">🖼️ hero illustration</div></div>
+
+<div class="stats">
+  <div><b>00</b><span>source pages</span></div>
+  <div><b>00</b><span>worked problems</span></div>
+  <div><b>00</b><span>source figures redrawn</span></div>
+  <div><b>00</b><span>interactive artifacts</span></div>
+</div>
+
+<div class="about"><b>▾ About this illustrated edition</b><br>
+All narration, question data, worked solutions, sequence, trivia and source notes are retained. Illustrations follow a hand-drawn science-notebook style. Equations use proper typesetting.<br><br>
+Flow kept from the source notes: Topic A → Topic B → Topic C → Topic D.</div>
+
+<!-- ================= SECTION 00: HOOK ================= -->
+<div class="sec"><div class="badge">00</div><h2>Introduction — The Story</h2></div>
+<div class="card">
+  <div class="fig-label">FIGURE 00</div>
+  <div class="illus" style="aspect-ratio:21/8">🎨 historical scene</div>
+  <div class="cap"><b>Figure 0.</b> One plain sentence describing the scene.<small>AI-generated notebook illustration · diagram geometry and question data define the physics.</small></div>
+</div>
+<p>In <b>YEAR</b>, <b>PERSON</b> noticed something odd. (One surprising, concrete scene. No definitions yet.) That tells us the big idea: <b>the key idea in plain words</b>. So we start with the first rule.</p>
+
+<!-- ================= SECTION 01: CONCEPT ================= -->
+<div class="sec"><div class="badge">01</div><h2>1. First Concept</h2></div>
+<div class="chips"><span class="chip">Idea A</span><span class="chip">Idea B</span><span class="chip">Idea C</span></div>
+
+<div class="card">
+  <div class="fig-label">FIGURE 01</div>
+  <div class="fig-grid">
+    <div class="illus">🙂</div>
+    <div class="model"><b>PHYSICS MODEL</b><br><br>Clean labelled schematic goes here (inline SVG).</div>
+  </div>
+  <div class="cap"><b>Figure 1.</b> Plain description of the figure.<small>AI-generated notebook illustration · diagram geometry and question data define the physics.</small></div>
+</div>
+
+<p>Explain the rule in short, friendly sentences. Say the trap out loud. Finish with the simple rule the student should remember.</p>
+
+<div class="eq">\[ Q = \Delta U + W \]</div>
+<ul class="syms">
+  <li>\(Q\) = energy supplied by heating (J)</li>
+  <li>\(\Delta U\) = change in internal energy (J)</li>
+  <li>\(W\) = work done by the system (J)</li>
+</ul>
+
+<div class="tip"><b>Examiner tip:</b> The one trap that costs marks, stated in one or two sentences.</div>
+
+<table>
+  <thead><tr><th>Quantity</th><th>Positive (+)</th><th>Negative (−)</th></tr></thead>
+  <tbody>
+    <tr><td>Q</td><td>heat added to the system</td><td>heat removed from the system</td></tr>
+    <tr><td>\(\Delta U\)</td><td>internal energy increases</td><td>internal energy decreases</td></tr>
+  </tbody>
+</table>
+
+<h3>A graph or diagram sub-heading</h3>
+<div class="card">
+  <div class="fig-label">FIGURE 02</div>
+  <!-- Pure-diagram figure: thin axes, one coloured path per idea, soft shaded area, label inside -->
+  <svg class="fig-svg" viewBox="0 0 640 240" font-family="Comic Neue, Comic Sans MS, cursive">
+    <defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0L10,5L0,10z" fill="#6b8a96"/></marker></defs>
+    <line x1="70" y1="200" x2="590" y2="200" stroke="#6b8a96" stroke-width="2" marker-end="url(#ah)"/>
+    <line x1="70" y1="200" x2="70" y2="20" stroke="#6b8a96" stroke-width="2" marker-end="url(#ah)"/>
+    <text x="596" y="206" fill="#6b8a96" font-size="16">V</text><text x="58" y="22" fill="#6b8a96" font-size="16">p</text>
+    <rect x="140" y="70" width="320" height="130" fill="#2f7f7a22"/>
+    <line x1="140" y1="70" x2="460" y2="70" stroke="#b9532f" stroke-width="4" marker-end="url(#ah)"/>
+    <text x="300" y="140" text-anchor="middle" fill="#22305a" font-size="20">Work = area under the graph</text>
+  </svg>
+  <div class="cap"><b>Figure 2.</b> Plain description.</div>
+</div>
+
+<!-- ================= WORKED PROBLEM ================= -->
+<section class="problem">
+  <div class="plabel">WORKED PROBLEM 01 / 00</div>
+  <h3>Problem 1 — A Friendly Object</h3>
+  <div class="src">📚 Textbook (Publisher, ed.) Section · topic · replaces SME: what the old question was</div>
+  <div class="card">
+    <div class="fig-grid">
+      <div class="illus">🛢️</div>
+      <div class="model"><b>QUESTION DATA &amp; MODEL</b><br>V = 0.050 m³<br>p = 2.0 × 10⁵ Pa<br>T = 27 °C</div>
+    </div>
+    <div class="cap">Visual setup · A Friendly Object</div>
+  </div>
+  <p>A rigid tank of volume \(0.050\,\text{m}^3\) holds an ideal gas at \(2.0\times10^{5}\,\text{Pa}\) and 27 °C.</p>
+  <p>(a) Calculate …<br>(b) Calculate …<br>(c) A student says: "…". Find the correct value.</p>
+  <details class="sol">
+    <summary>▾ Worked solution</summary>
+    <p>(a) \(U=\tfrac32 pV = 1.5\times(2.0\times10^5)\times0.050 = 1.5\times10^4\,\text{J}\)</p>
+    <p>(b) Step, with units, then the answer in bold.</p>
+    <p>(c) The physics lesson in one sentence (e.g. "U ∝ T in kelvin, not Celsius").</p>
+  </details>
+</section>
+
+<!-- ================= INTERACTIVE ARTIFACT ================= -->
+<section class="artifact" id="art1">
+  <div class="alabel">Interactive artifact 01 · Particle model</div>
+  <h3>Turn up the temperature.</h3>
+  <div class="agrid">
+    <div class="stage"><canvas width="420" height="300"></canvas>
+      <div style="font-size:12px;opacity:.7;margin-top:4px">Qualitative motion · fixed volume and particle number.</div></div>
+    <div>
+      <label for="t1">Temperature / K</label>
+      <p class="big"><span id="tv">300</span> K</p>
+      <input id="t1" type="range" min="100" max="900" step="10" value="300">
+      <div class="readout">U / U₃₀₀ = <span id="uv">1.00</span><br>Typical speed / speed₃₀₀ = <span id="sv">1.00</span></div>
+      <p style="font-size:15px">For the same ideal monatomic gas, internal energy scales with absolute temperature.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CLOSING ================= -->
+<div class="sec"><div class="badge">10</div><h2>10. Extension: Big-Picture Idea</h2></div>
+<p>A thought experiment or consequence that lifts the whole module. End with the summary line: <b>Law 1 holds; Law 2 holds; limit holds.</b></p>
+
+<div class="trivia">
+  <h3>⭐ Bonus Trivia</h3>
+  <p>Two or three surprising facts about people or objects from the module (dates, mysteries, everyday numbers).</p>
+  <h3>Question Sources Note</h3>
+  <p>All problems are newly written at the course's exam difficulty, in the style of the named textbook and recent papers. Constants used: …</p>
+</div>
+
+<div class="footer">MODULE NAME · COURSE | <span id="pg">1 / 1</span></div>
+</main>
+
+<script>
+/* Tiny particle toy: speed scales with sqrt(T). Copy this block for each artifact; change the readout maths. */
+(function(){
+  var root=document.getElementById('art1'), cv=root.querySelector('canvas'), c=cv.getContext('2d');
+  var sl=root.querySelector('#t1'), tv=root.querySelector('#tv'), uv=root.querySelector('#uv'), sv=root.querySelector('#sv');
+  var N=22, P=[], T=300;
+  for(var i=0;i<N;i++){var a=Math.random()*6.283;P.push({x:Math.random()*400+10,y:Math.random()*280+10,vx:Math.cos(a),vy:Math.sin(a)})}
+  sl.addEventListener('input',function(){T=+sl.value;tv.textContent=T;uv.textContent=(T/300).toFixed(2);sv.textContent=Math.sqrt(T/300).toFixed(2)});
+  var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function draw(){
+    c.clearRect(0,0,cv.width,cv.height); var s=2.2*Math.sqrt(T/300);
+    c.fillStyle=T>500?'#e0524a':'#2a6fdb';
+    P.forEach(function(p){
+      if(!reduce){p.x+=p.vx*s;p.y+=p.vy*s}
+      if(p.x<8||p.x>cv.width-8)p.vx*=-1; if(p.y<8||p.y>cv.height-8)p.vy*=-1;
+      c.beginPath();c.arc(p.x,p.y,6,0,6.283);c.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+</script>
+</body>
+</html>
