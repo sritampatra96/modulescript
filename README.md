@@ -12,11 +12,3 @@ A zip-ready kit for ChatGPT and Codex: a model + reasoning-effort advisor, an au
 - **Build history:** [`docs/SESSION_LOG.md`](docs/SESSION_LOG.md)
 
 Model names in `memory-optimizer-kit/config/models.json` are examples; edit them to match your account.
-
-## Illustrated Notebook style
-The house style for module notes (story-first narration, hand-drawn notebook look, worked problems, interactive artifacts), captured from the Thermodynamics notebook.
-
-- **Style guide:** [`works/illustrated-notebook/STYLE_GUIDE.md`](works/illustrated-notebook/STYLE_GUIDE.md)
-- **Starter template:** [`works/illustrated-notebook/template.html`](works/illustrated-notebook/template.html)
-- **Original reference (kept safe):** [`works/illustrated-notebook/reference/`](works/illustrated-notebook/reference)
-- **Skill:** `illustrated-notebook` ([`.claude/skills/illustrated-notebook`](.claude/skills/illustrated-notebook))
